@@ -9,7 +9,6 @@ import (
 func main() {
 	cpu := cpu.NewCPU()
 	cpu.SetROM()
-	fmt.Printf("%#v\n", cpu)
 	cpu.Step()
 	fmt.Printf("%#v\n", cpu)
 }
