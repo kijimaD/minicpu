@@ -4,6 +4,7 @@ const (
 	MOV  = 0
 	ADD  = 1
 	SUB  = 2
+	AND  = 3
 	OR   = 4
 	SL   = 5
 	SR   = 6

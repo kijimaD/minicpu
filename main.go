@@ -19,8 +19,17 @@ type CPU struct {
 // NewCPU is CPU constructor
 func NewCPU() *CPU {
 	cpu := &CPU{
-		PC:   0x0100, // INFO: Skip
-		Regs: Regs{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
+		PC: 0x0100, // INFO: Skip
+		Regs: Regs{
+			0x0000,
+			0x0000,
+			0x0000,
+			0x0000,
+			0x0000,
+			0x0000,
+			0x0000,
+			0x0000,
+		},
 	}
 	return cpu
 }
@@ -68,11 +77,11 @@ func (cpu *CPU) add(ra, rb Register) {
 	ra = ra | rb
 }
 
-// ここには生の値が入っている(byte)
 func (cpu *CPU) setROM() {
 	asm := asm.Assembler{}
-	cpu.ROM[0] = asm.Ldl(cpu.Regs[0], 3)
-	cpu.ROM[1] = asm.Add(cpu.Regs[1], cpu.Regs[0]) // to, from
+	cpu.ROM[0] = asm.Ldl(0, 3)
+	cpu.ROM[1] = asm.Ldh(0, 1)
+	cpu.ROM[2] = asm.Add(1, cpu.Regs[0]) // to, from
 }
 
 func main() {
