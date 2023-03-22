@@ -36,13 +36,24 @@ func TestMov(t *testing.T) {
 	assert.Equal(t, uint16(0x0), c.Regs[1])
 }
 
+func TestAdd(t *testing.T) {
+	// opcode, regA, regB
+	// 1, 1, 2
+	c := setup([]uint16{0x1140})
+	c.Regs = cpu.Regs{0x3, 0x5, 0x7}
+	c.Step()
+	assert.Equal(t, uint16(0x3), c.Regs[0])
+	assert.Equal(t, uint16(0xc), c.Regs[1])
+	assert.Equal(t, uint16(0x7), c.Regs[2])
+}
+
 func TestLdl(t *testing.T) {
 	// opcode, reg, val
 	// 8, 0, 3
 	// 8, 3, 5
-	cpu := setup([]uint16{0x4003, 0x4305})
-	cpu.Step()
-	assert.Equal(t, uint16(0x03), cpu.Regs[0])
-	cpu.Step()
-	assert.Equal(t, uint16(0x05), cpu.Regs[3])
+	c := setup([]uint16{0x4003, 0x4305})
+	c.Step()
+	assert.Equal(t, uint16(0x03), c.Regs[0])
+	c.Step()
+	assert.Equal(t, uint16(0x05), c.Regs[3])
 }

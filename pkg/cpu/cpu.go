@@ -81,7 +81,7 @@ func (cpu *CPU) mov(ra, rb Register) {
 }
 
 func (cpu *CPU) add(ra, rb Register) {
-	ra = ra + rb
+	cpu.Regs[ra] = cpu.Regs[ra] + cpu.Regs[rb]
 }
 
 func (cpu *CPU) ldl(r Register, val uint16) {
