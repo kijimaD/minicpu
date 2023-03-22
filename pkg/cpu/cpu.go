@@ -76,6 +76,10 @@ func (cpu *CPU) Step() {
 	inst.Execute(cpu, operands)
 }
 
+func (cpu *CPU) mov(ra, rb Register) {
+	cpu.Regs[ra] = cpu.Regs[rb]
+}
+
 func (cpu *CPU) add(ra, rb Register) {
 	ra = ra + rb
 }
@@ -99,7 +103,7 @@ type inst struct {
 }
 
 var instructions = []*inst{
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
+	&inst{types.MOV, "mov", func(cpu *CPU, operands []uint16) { cpu.mov(operands[0], operands[1]) }},
 	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
 	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
 	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
