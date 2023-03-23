@@ -10,6 +10,7 @@ type Register = uint16
 
 type CPU struct {
 	PC   uint16
+	IR   uint16
 	Regs Regs
 	ROM  [256]uint16
 	RAM  [256]uint16
@@ -19,6 +20,7 @@ type CPU struct {
 func NewCPU() *CPU {
 	cpu := &CPU{
 		PC:   0x00,
+		IR:   0x00,
 		Regs: Regs{},
 		ROM:  [256]uint16{},
 		RAM:  [256]uint16{},
@@ -71,6 +73,8 @@ func (cpu *CPU) opdata(line uint16) uint16 {
 func (cpu *CPU) Step() {
 	operands := cpu.fetchOperands()
 	opcode := cpu.fetch()
+	cpu.IR = opcode
+
 	var inst *inst
 	inst = instructions[opcode]
 	inst.Execute(cpu, operands)
@@ -86,6 +90,10 @@ func (cpu *CPU) add(ra, rb Register) {
 
 func (cpu *CPU) sub(ra, rb Register) {
 	cpu.Regs[ra] = cpu.Regs[ra] - cpu.Regs[rb]
+}
+
+func (cpu *CPU) and(ra, rb Register) {
+	cpu.Regs[ra] = cpu.Regs[ra] & cpu.Regs[rb]
 }
 
 func (cpu *CPU) ldl(r Register, val uint16) {
@@ -108,12 +116,12 @@ type inst struct {
 
 var instructions = []*inst{
 	&inst{types.MOV, "mov", func(cpu *CPU, operands []uint16) { cpu.mov(operands[0], operands[1]) }},
-	&inst{types.SUB, "add", func(cpu *CPU, operands []uint16) { cpu.sub(operands[0], operands[1]) }},
-	&inst{types.ADD, "sub", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
+	&inst{types.SUB, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
+	&inst{types.ADD, "sub", func(cpu *CPU, operands []uint16) { cpu.sub(operands[0], operands[1]) }},
+	&inst{types.ADD, "and", func(cpu *CPU, operands []uint16) { cpu.and(operands[0], operands[1]) }},
+	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { panic("not implement"); cpu.add(operands[0], operands[1]) }},
+	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { panic("not implement"); cpu.add(operands[0], operands[1]) }},
+	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { panic("not implement"); cpu.add(operands[0], operands[1]) }},
+	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { panic("not implement"); cpu.add(operands[0], operands[1]) }},
 	&inst{types.LDL, "ldl", func(cpu *CPU, operands []uint16) { cpu.ldl(operands[0], operands[2]) }},
 }

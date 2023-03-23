@@ -26,12 +26,14 @@ func TestMov(t *testing.T) {
 	// opcode, regA, regB
 	// 0, 1, 0
 	// 0, 1, 5
-	c := setup([]uint16{0x0100, 0x0150})
+	c := setup([]uint16{0b0000_001_000_00000, 0b0000_001_101_00000})
 	c.Regs = cpu.Regs{0x3, 0x5}
 	c.Step()
+	assert.Equal(t, uint16(0x0), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x3), c.Regs[1])
 	c.Step()
+	assert.Equal(t, uint16(0x0), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x0), c.Regs[1])
 }
@@ -39,21 +41,37 @@ func TestMov(t *testing.T) {
 func TestAdd(t *testing.T) {
 	// opcode, regA, regB
 	// 1, 1, 2
-	c := setup([]uint16{0x1140})
-	c.Regs = cpu.Regs{0x3, 0x5, 0x7}
+	c := setup([]uint16{0b0001_001_010_00000})
+	c.Regs = cpu.Regs{0x3, 0x1, 0x2}
 	c.Step()
+
+	assert.Equal(t, uint16(0x1), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
-	assert.Equal(t, uint16(0xc), c.Regs[1])
-	assert.Equal(t, uint16(0x7), c.Regs[2])
+	assert.Equal(t, uint16(0x3), c.Regs[1])
+	assert.Equal(t, uint16(0x2), c.Regs[2])
 }
 
 func TestSub(t *testing.T) {
 	// opcode, regA, regB
-	// 2, 4, 1
-	c := setup([]uint16{0x1434})
-	c.Regs = cpu.Regs{0x3, 0x5, 0x7}
+	// 2, 1, 2
+	c := setup([]uint16{0b0010_001_010_00000})
+	c.Regs = cpu.Regs{0x1, 0x7, 0x5}
 	c.Step()
-	assert.Equal(t, uint16(0x3), c.Regs[0])
+	assert.Equal(t, uint16(0x2), c.IR)
+	assert.Equal(t, uint16(0x1), c.Regs[0])
+	assert.Equal(t, uint16(0x2), c.Regs[1])
+	assert.Equal(t, uint16(0x5), c.Regs[2])
+}
+
+func TestAnd(t *testing.T) {
+	// opcode, regA, regB
+	// 3, 1, 2
+	c := setup([]uint16{0b0011_001_010_00000})
+	c.Regs = cpu.Regs{0x3, 0x1, 0x2}
+	c.Step()
+	assert.Equal(t, uint16(0x3), c.IR)
+	assert.Equal(t, uint16(0x0), c.Regs[1])
+
 }
 
 func TestLdl(t *testing.T) {
