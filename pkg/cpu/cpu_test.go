@@ -71,7 +71,22 @@ func TestAnd(t *testing.T) {
 	c.Step()
 	assert.Equal(t, uint16(0x3), c.IR)
 	assert.Equal(t, uint16(0x0), c.Regs[1])
+	// 0b01
+	// 0b10
+	// 0b00 => 0x0
+}
 
+func TestOr(t *testing.T) {
+	// opcode, regA, regB
+	// 4, 1, 2
+	c := setup([]uint16{0b0100_001_010_00000})
+	c.Regs = cpu.Regs{0x3, 0x1, 0x2}
+	c.Step()
+	assert.Equal(t, uint16(0x4), c.IR)
+	assert.Equal(t, uint16(0x3), c.Regs[1])
+	// 0b01
+	// 0b10
+	// 0b11 => 0x3
 }
 
 func TestLdl(t *testing.T) {
