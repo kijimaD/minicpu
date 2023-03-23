@@ -47,6 +47,15 @@ func TestAdd(t *testing.T) {
 	assert.Equal(t, uint16(0x7), c.Regs[2])
 }
 
+func TestSub(t *testing.T) {
+	// opcode, regA, regB
+	// 2, 4, 1
+	c := setup([]uint16{0x1434})
+	c.Regs = cpu.Regs{0x3, 0x5, 0x7}
+	c.Step()
+	assert.Equal(t, uint16(0x3), c.Regs[0])
+}
+
 func TestLdl(t *testing.T) {
 	// opcode, reg, val
 	// 8, 0, 3

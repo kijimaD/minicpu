@@ -84,6 +84,10 @@ func (cpu *CPU) add(ra, rb Register) {
 	cpu.Regs[ra] = cpu.Regs[ra] + cpu.Regs[rb]
 }
 
+func (cpu *CPU) sub(ra, rb Register) {
+	cpu.Regs[ra] = cpu.Regs[ra] - cpu.Regs[rb]
+}
+
 func (cpu *CPU) ldl(r Register, val uint16) {
 	cpu.Regs[r] = (r & 0xff00) | (val & 0x00ff)
 }
@@ -104,8 +108,8 @@ type inst struct {
 
 var instructions = []*inst{
 	&inst{types.MOV, "mov", func(cpu *CPU, operands []uint16) { cpu.mov(operands[0], operands[1]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
+	&inst{types.SUB, "add", func(cpu *CPU, operands []uint16) { cpu.sub(operands[0], operands[1]) }},
+	&inst{types.ADD, "sub", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
 	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
 	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
 	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
