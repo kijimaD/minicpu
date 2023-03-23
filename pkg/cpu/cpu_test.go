@@ -70,7 +70,9 @@ func TestAnd(t *testing.T) {
 	c.Regs = cpu.Regs{0x3, 0x1, 0x2}
 	c.Step()
 	assert.Equal(t, uint16(0x3), c.IR)
+	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x0), c.Regs[1])
+	assert.Equal(t, uint16(0x2), c.Regs[2])
 	// 0b01
 	// 0b10
 	// 0b00 => 0x0
@@ -83,19 +85,43 @@ func TestOr(t *testing.T) {
 	c.Regs = cpu.Regs{0x3, 0x1, 0x2}
 	c.Step()
 	assert.Equal(t, uint16(0x4), c.IR)
+	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x3), c.Regs[1])
+	assert.Equal(t, uint16(0x2), c.Regs[2])
 	// 0b01
 	// 0b10
 	// 0b11 => 0x3
 }
 
+func TestSl(t *testing.T) {
+	// opcode, regA, regB
+	// 5, 1, 0
+	c := setup([]uint16{0b0101_001_000_00000})
+	c.Regs = cpu.Regs{0x3, 0x2, 0x2}
+	c.Step()
+	assert.Equal(t, uint16(0x5), c.IR)
+	assert.Equal(t, uint16(0x3), c.Regs[0])
+	assert.Equal(t, uint16(0x4), c.Regs[1])
+	assert.Equal(t, uint16(0x2), c.Regs[2])
+	// 0b010
+	// 0b100 => 0x4
+}
+
 func TestLdl(t *testing.T) {
 	// opcode, reg, val
 	// 8, 0, 3
-	// 8, 3, 5
-	c := setup([]uint16{0x4003, 0x4305})
+	// 8, 3, 4
+	c := setup([]uint16{0b1000_000_000_00011, 0b1000_011_000_00100})
 	c.Step()
+	assert.Equal(t, uint16(0x8), c.IR)
 	assert.Equal(t, uint16(0x03), c.Regs[0])
+	assert.Equal(t, uint16(0x00), c.Regs[1])
+	assert.Equal(t, uint16(0x00), c.Regs[2])
+	assert.Equal(t, uint16(0x00), c.Regs[3])
 	c.Step()
-	assert.Equal(t, uint16(0x05), c.Regs[3])
+	assert.Equal(t, uint16(0x8), c.IR)
+	assert.Equal(t, uint16(0x03), c.Regs[0])
+	assert.Equal(t, uint16(0x00), c.Regs[1])
+	assert.Equal(t, uint16(0x00), c.Regs[2])
+	assert.Equal(t, uint16(0x04), c.Regs[3])
 }

@@ -100,6 +100,10 @@ func (cpu *CPU) or(ra, rb Register) {
 	cpu.Regs[ra] = cpu.Regs[ra] | cpu.Regs[rb]
 }
 
+func (cpu *CPU) sl(ra Register) {
+	cpu.Regs[ra] = cpu.Regs[ra] << 1
+}
+
 func (cpu *CPU) ldl(r Register, val uint16) {
 	cpu.Regs[r] = (r & 0xff00) | (val & 0x00ff)
 }
@@ -124,7 +128,7 @@ var instructions = []*inst{
 	&inst{types.ADD, "sub", func(cpu *CPU, operands []uint16) { cpu.sub(operands[0], operands[1]) }},
 	&inst{types.ADD, "and", func(cpu *CPU, operands []uint16) { cpu.and(operands[0], operands[1]) }},
 	&inst{types.OR, "or", func(cpu *CPU, operands []uint16) { cpu.or(operands[0], operands[1]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { panic("not implement"); cpu.add(operands[0], operands[1]) }},
+	&inst{types.SL, "sl", func(cpu *CPU, operands []uint16) { cpu.sl(operands[0]) }},
 	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { panic("not implement"); cpu.add(operands[0], operands[1]) }},
 	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { panic("not implement"); cpu.add(operands[0], operands[1]) }},
 	&inst{types.LDL, "ldl", func(cpu *CPU, operands []uint16) { cpu.ldl(operands[0], operands[2]) }},
