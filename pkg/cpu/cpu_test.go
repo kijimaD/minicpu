@@ -109,11 +109,25 @@ func TestSl(t *testing.T) {
 
 func TestSr(t *testing.T) {
 	// opcode, regA, regB
-	// 5, 1, 0
+	// 6, 1, 0
 	c := setup([]uint16{0b0110_001_000_00000})
 	c.Regs = cpu.Regs{0x3, 0x2, 0x2}
 	c.Step()
 	assert.Equal(t, uint16(0x6), c.IR)
+	assert.Equal(t, uint16(0x3), c.Regs[0])
+	assert.Equal(t, uint16(0x1), c.Regs[1])
+	assert.Equal(t, uint16(0x2), c.Regs[2])
+	// 0b010
+	// 0b001 => 0x1
+}
+
+func TestSra(t *testing.T) {
+	// opcode, regA, regB
+	// 7, 1, 0
+	c := setup([]uint16{0b0111_001_000_00000})
+	c.Regs = cpu.Regs{0x3, 0x2, 0x2}
+	c.Step()
+	assert.Equal(t, uint16(0x7), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x1), c.Regs[1])
 	assert.Equal(t, uint16(0x2), c.Regs[2])

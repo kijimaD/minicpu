@@ -108,6 +108,10 @@ func (cpu *CPU) sr(ra Register) {
 	cpu.Regs[ra] = cpu.Regs[ra] >> 1
 }
 
+func (cpu *CPU) sra(ra Register) {
+	cpu.Regs[ra] = (cpu.Regs[ra] & 0x8000) | (cpu.Regs[ra] >> 1)
+}
+
 func (cpu *CPU) ldl(r Register, val uint16) {
 	cpu.Regs[r] = (r & 0xff00) | (val & 0x00ff)
 }
@@ -121,7 +125,7 @@ func (cpu *CPU) SetROM() {
 
 // 命令
 type inst struct {
-	Opcode      byte // なので8種類しかない
+	Opcode      byte // byteなので8種類しかない
 	Description string
 	Execute     func(cpu *CPU, operands []uint16)
 }
@@ -134,6 +138,6 @@ var instructions = []*inst{
 	&inst{types.OR, "or", func(cpu *CPU, operands []uint16) { cpu.or(operands[0], operands[1]) }},
 	&inst{types.SL, "sl", func(cpu *CPU, operands []uint16) { cpu.sl(operands[0]) }},
 	&inst{types.SR, "sr", func(cpu *CPU, operands []uint16) { cpu.sr(operands[0]) }},
-	&inst{types.ADD, "add", func(cpu *CPU, operands []uint16) { panic("not implement"); cpu.add(operands[0], operands[1]) }},
+	&inst{types.SRA, "sra", func(cpu *CPU, operands []uint16) { cpu.sra(operands[0]) }},
 	&inst{types.LDL, "ldl", func(cpu *CPU, operands []uint16) { cpu.ldl(operands[0], operands[2]) }},
 }
