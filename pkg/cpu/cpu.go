@@ -15,6 +15,7 @@ type CPU struct {
 	Regs   Regs
 	ROM    [256]uint16
 	RAM    [256]uint16
+	Halted bool
 }
 
 // NewCPU is CPU constructor
@@ -26,6 +27,7 @@ func NewCPU() *CPU {
 		Regs:   Regs{},
 		ROM:    [256]uint16{},
 		RAM:    [256]uint16{},
+		Halted: false,
 	}
 	return cpu
 }
@@ -148,6 +150,10 @@ func (cpu *CPU) st(ra Register, val uint16) {
 	cpu.RAM[val] = cpu.Regs[ra]
 }
 
+func (cpu *CPU) hlt() {
+	cpu.Halted = true
+}
+
 func (cpu *CPU) SetROM() {
 	asm := asm.Assembler{}
 	cpu.ROM[0] = asm.Ldl(0, 3)
@@ -178,4 +184,5 @@ var instructions = []*inst{
 	&inst{types.JMP, "jmp", func(cpu *CPU, operands []uint16) { cpu.jmp(operands[2]) }},
 	&inst{types.LD, "ld", func(cpu *CPU, operands []uint16) { cpu.ld(operands[0], operands[2]) }},
 	&inst{types.ST, "st", func(cpu *CPU, operands []uint16) { cpu.st(operands[0], operands[2]) }},
+	&inst{types.HLT, "hlt", func(cpu *CPU, operands []uint16) { cpu.hlt() }},
 }

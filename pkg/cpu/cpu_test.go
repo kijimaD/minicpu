@@ -236,3 +236,12 @@ func TestSt(t *testing.T) {
 	assert.Equal(t, uint16(0xe), c.IR)
 	assert.Equal(t, uint16(0x4), c.RAM[1])
 }
+
+func TestHlt(t *testing.T) {
+	// opcode
+	// 15
+	c := setup([]uint16{0b1111_000_000_00000})
+	c.Step()
+	assert.Equal(t, uint16(0xf), c.IR)
+	assert.Equal(t, true, c.Halted)
+}
