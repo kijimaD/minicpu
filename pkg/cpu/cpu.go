@@ -85,8 +85,21 @@ func (cpu *CPU) Step() {
 }
 
 func (cpu *CPU) SetROM() {
+	// 1+2+...+10=55
 	asm := asm.Assembler{}
-	cpu.ROM[0] = asm.Ldl(types.REG0, 3)
-	cpu.ROM[1] = asm.Ldh(types.REG0, 1)
-	cpu.ROM[2] = asm.Add(types.REG0, 0)
+	cpu.ROM[0] = asm.LDH(types.REG0, 0)
+	cpu.ROM[1] = asm.LDL(types.REG0, 0)
+	cpu.ROM[2] = asm.LDH(types.REG1, 0)
+	cpu.ROM[3] = asm.LDL(types.REG1, 1)
+	cpu.ROM[4] = asm.LDH(types.REG2, 0)
+	cpu.ROM[5] = asm.LDL(types.REG2, 0)
+	cpu.ROM[6] = asm.LDH(types.REG3, 0)
+	cpu.ROM[7] = asm.LDL(types.REG3, 10)
+	cpu.ROM[8] = asm.ADD(types.REG2, types.REG1)
+	cpu.ROM[9] = asm.ADD(types.REG0, types.REG2)
+	cpu.ROM[10] = asm.ST(types.REG0, 64)
+	cpu.ROM[11] = asm.CMP(types.REG2, types.REG3)
+	cpu.ROM[12] = asm.JE(14)
+	cpu.ROM[13] = asm.JMP(8)
+	cpu.ROM[14] = asm.HLT()
 }
