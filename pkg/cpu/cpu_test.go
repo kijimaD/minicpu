@@ -226,3 +226,13 @@ func TestLd(t *testing.T) {
 	assert.Equal(t, uint16(0xd), c.IR)
 	assert.Equal(t, uint16(0xa), c.Regs[1])
 }
+
+func TestSt(t *testing.T) {
+	// opcode, regA, val
+	// 14, 1, 2
+	c := setup([]uint16{0b1110_001_000_00001})
+	c.Regs = cpu.Regs{0x3, 0x4}
+	c.Step()
+	assert.Equal(t, uint16(0xe), c.IR)
+	assert.Equal(t, uint16(0x4), c.RAM[1])
+}
