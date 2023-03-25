@@ -9,21 +9,23 @@ type Regs [8]Register
 type Register = uint16
 
 type CPU struct {
-	PC   uint16
-	IR   uint16
-	Regs Regs
-	ROM  [256]uint16
-	RAM  [256]uint16
+	PC     uint16
+	IR     uint16
+	EQFlag bool
+	Regs   Regs
+	ROM    [256]uint16
+	RAM    [256]uint16
 }
 
 // NewCPU is CPU constructor
 func NewCPU() *CPU {
 	cpu := &CPU{
-		PC:   0x00,
-		IR:   0x00,
-		Regs: Regs{},
-		ROM:  [256]uint16{},
-		RAM:  [256]uint16{},
+		PC:     0x00,
+		IR:     0x00,
+		EQFlag: false,
+		Regs:   Regs{},
+		ROM:    [256]uint16{},
+		RAM:    [256]uint16{},
 	}
 	return cpu
 }
@@ -120,6 +122,14 @@ func (cpu *CPU) ldh(ra Register, val uint16) {
 	cpu.Regs[ra] = (val << 8) | (cpu.Regs[ra] & 0x00ff)
 }
 
+func (cpu *CPU) cmp(ra, rb Register) {
+	if cpu.Regs[ra] == cpu.Regs[rb] {
+		cpu.EQFlag = true
+	} else {
+		cpu.EQFlag = false
+	}
+}
+
 func (cpu *CPU) SetROM() {
 	asm := asm.Assembler{}
 	cpu.ROM[0] = asm.Ldl(0, 3)
@@ -145,4 +155,5 @@ var instructions = []*inst{
 	&inst{types.SRA, "sra", func(cpu *CPU, operands []uint16) { cpu.sra(operands[0]) }},
 	&inst{types.LDL, "ldl", func(cpu *CPU, operands []uint16) { cpu.ldl(operands[0], operands[2]) }},
 	&inst{types.LDH, "ldh", func(cpu *CPU, operands []uint16) { cpu.ldh(operands[0], operands[2]) }},
+	&inst{types.CMP, "cmp", func(cpu *CPU, operands []uint16) { cpu.cmp(operands[0], operands[1]) }},
 }

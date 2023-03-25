@@ -168,3 +168,20 @@ func TestLdh(t *testing.T) {
 	// 0b0000_0000_0000_0010 // RegA
 	// 0b0000_0001_0000_0010 // result
 }
+
+func TestCmp(t *testing.T) {
+	// opcode, regA, regB
+	// 10, 1, 0
+	c := setup([]uint16{0b1010_001_001_00000, 0b1010_000_001_00000})
+	c.Regs = cpu.Regs{0x3, 0x2}
+	c.Step()
+	assert.Equal(t, uint16(0xa), c.IR)
+	assert.Equal(t, uint16(0x3), c.Regs[0])
+	assert.Equal(t, uint16(0x2), c.Regs[1])
+	assert.Equal(t, true, c.EQFlag)
+	c.Step()
+	assert.Equal(t, uint16(0xa), c.IR)
+	assert.Equal(t, uint16(0x3), c.Regs[0])
+	assert.Equal(t, uint16(0x2), c.Regs[1])
+	assert.Equal(t, false, c.EQFlag)
+}
