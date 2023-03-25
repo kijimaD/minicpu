@@ -97,21 +97,21 @@ type inst struct {
 	Execute     func(cpu *CPU, operands []uint16)
 }
 
-var instructions = []*inst{
-	&inst{types.MOV, "mov", func(cpu *CPU, operands []uint16) { cpu.mov(operands[0], operands[1]) }},
-	&inst{types.SUB, "add", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
-	&inst{types.ADD, "sub", func(cpu *CPU, operands []uint16) { cpu.sub(operands[0], operands[1]) }},
-	&inst{types.ADD, "and", func(cpu *CPU, operands []uint16) { cpu.and(operands[0], operands[1]) }},
-	&inst{types.OR, "or", func(cpu *CPU, operands []uint16) { cpu.or(operands[0], operands[1]) }},
-	&inst{types.SL, "sl", func(cpu *CPU, operands []uint16) { cpu.sl(operands[0]) }},
-	&inst{types.SR, "sr", func(cpu *CPU, operands []uint16) { cpu.sr(operands[0]) }},
-	&inst{types.SRA, "sra", func(cpu *CPU, operands []uint16) { cpu.sra(operands[0]) }},
-	&inst{types.LDL, "ldl", func(cpu *CPU, operands []uint16) { cpu.ldl(operands[0], operands[2]) }},
-	&inst{types.LDH, "ldh", func(cpu *CPU, operands []uint16) { cpu.ldh(operands[0], operands[2]) }},
-	&inst{types.CMP, "cmp", func(cpu *CPU, operands []uint16) { cpu.cmp(operands[0], operands[1]) }},
-	&inst{types.JE, "je", func(cpu *CPU, operands []uint16) { cpu.je(operands[2]) }},
-	&inst{types.JMP, "jmp", func(cpu *CPU, operands []uint16) { cpu.jmp(operands[2]) }},
-	&inst{types.LD, "ld", func(cpu *CPU, operands []uint16) { cpu.ld(operands[0], operands[2]) }},
-	&inst{types.ST, "st", func(cpu *CPU, operands []uint16) { cpu.st(operands[0], operands[2]) }},
-	&inst{types.HLT, "hlt", func(cpu *CPU, operands []uint16) { cpu.hlt() }},
+var Instructions = []*inst{
+	&inst{types.MOV, "MOV", func(cpu *CPU, operands []uint16) { cpu.mov(operands[0], operands[1]) }},
+	&inst{types.SUB, "ADD", func(cpu *CPU, operands []uint16) { cpu.add(operands[0], operands[1]) }},
+	&inst{types.ADD, "SUB", func(cpu *CPU, operands []uint16) { cpu.sub(operands[0], operands[1]) }},
+	&inst{types.ADD, "AND", func(cpu *CPU, operands []uint16) { cpu.and(operands[0], operands[1]) }},
+	&inst{types.OR, "OR", func(cpu *CPU, operands []uint16) { cpu.or(operands[0], operands[1]) }},
+	&inst{types.SL, "SL", func(cpu *CPU, operands []uint16) { cpu.sl(operands[0]) }},
+	&inst{types.SR, "SR", func(cpu *CPU, operands []uint16) { cpu.sr(operands[0]) }},
+	&inst{types.SRA, "SRA", func(cpu *CPU, operands []uint16) { cpu.sra(operands[0]) }},
+	&inst{types.LDL, "LDL", func(cpu *CPU, operands []uint16) { cpu.ldl(operands[0], operands[2]) }},
+	&inst{types.LDH, "LDH", func(cpu *CPU, operands []uint16) { cpu.ldh(operands[0], operands[2]) }},
+	&inst{types.CMP, "CMP", func(cpu *CPU, operands []uint16) { cpu.cmp(operands[0], operands[1]) }},
+	&inst{types.JE, "JE", func(cpu *CPU, operands []uint16) { cpu.je(operands[2]) }},
+	&inst{types.JMP, "JMP", func(cpu *CPU, operands []uint16) { cpu.jmp(operands[2]) }},
+	&inst{types.LD, "LD", func(cpu *CPU, operands []uint16) { cpu.ld(operands[0], operands[2]) }},
+	&inst{types.ST, "ST", func(cpu *CPU, operands []uint16) { cpu.st(operands[0], operands[2]) }},
+	&inst{types.HLT, "HLT", func(cpu *CPU, operands []uint16) { cpu.hlt() }},
 }

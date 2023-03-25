@@ -16,6 +16,7 @@ type CPU struct {
 	ROM    [256]uint16
 	RAM    [256]uint16
 	Halted bool
+	Curop  uint16
 }
 
 // NewCPU is CPU constructor
@@ -28,12 +29,14 @@ func NewCPU() *CPU {
 		ROM:    [256]uint16{},
 		RAM:    [256]uint16{},
 		Halted: false,
+		Curop:  0x00,
 	}
 	return cpu
 }
 
 func (cpu *CPU) fetch() uint16 {
 	d := cpu.ROM[cpu.PC]
+	cpu.IR = d
 	cpu.PC++
 	return cpu.opcode(d)
 }
@@ -77,10 +80,10 @@ func (cpu *CPU) opdata(line uint16) uint16 {
 func (cpu *CPU) Step() {
 	operands := cpu.fetchOperands()
 	opcode := cpu.fetch()
-	cpu.IR = opcode
+	cpu.Curop = opcode
 
 	var inst *inst
-	inst = instructions[opcode]
+	inst = Instructions[opcode]
 	inst.Execute(cpu, operands)
 }
 
