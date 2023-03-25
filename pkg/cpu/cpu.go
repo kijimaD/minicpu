@@ -116,6 +116,10 @@ func (cpu *CPU) ldl(r Register, val uint16) {
 	cpu.Regs[r] = (r & 0xff00) | (val & 0x00ff)
 }
 
+func (cpu *CPU) ldh(ra Register, val uint16) {
+	cpu.Regs[ra] = (val << 8) | (cpu.Regs[ra] & 0x00ff)
+}
+
 func (cpu *CPU) SetROM() {
 	asm := asm.Assembler{}
 	cpu.ROM[0] = asm.Ldl(0, 3)
@@ -140,4 +144,5 @@ var instructions = []*inst{
 	&inst{types.SR, "sr", func(cpu *CPU, operands []uint16) { cpu.sr(operands[0]) }},
 	&inst{types.SRA, "sra", func(cpu *CPU, operands []uint16) { cpu.sra(operands[0]) }},
 	&inst{types.LDL, "ldl", func(cpu *CPU, operands []uint16) { cpu.ldl(operands[0], operands[2]) }},
+	&inst{types.LDH, "ldh", func(cpu *CPU, operands []uint16) { cpu.ldh(operands[0], operands[2]) }},
 }

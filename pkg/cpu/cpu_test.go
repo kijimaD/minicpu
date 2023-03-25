@@ -153,3 +153,18 @@ func TestLdl(t *testing.T) {
 	assert.Equal(t, uint16(0x00), c.Regs[2])
 	assert.Equal(t, uint16(0x04), c.Regs[3])
 }
+
+func TestLdh(t *testing.T) {
+	// opcode, regA, val
+	// 9, 1, 0
+	c := setup([]uint16{0b1001_001_000_00001})
+	c.Regs = cpu.Regs{0x3, 0x2, 0x2}
+	c.Step()
+	assert.Equal(t, uint16(0x9), c.IR)
+	assert.Equal(t, uint16(0x3), c.Regs[0])
+	assert.Equal(t, uint16(0x102), c.Regs[1])
+	assert.Equal(t, uint16(0x2), c.Regs[2])
+	// 0b0000_0001 // operand 2
+	// 0b0000_0000_0000_0010 // RegA
+	// 0b0000_0001_0000_0010 // result
+}
