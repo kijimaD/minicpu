@@ -188,7 +188,7 @@ func TestCmp(t *testing.T) {
 
 func TestJe(t *testing.T) {
 	// opcode, val
-	// 11, 1, 0
+	// 11, 0
 	c := setup([]uint16{0b1010_001_001_00000, 0b1011_000_000_00000})
 	c.Regs = cpu.Regs{0x3, 0x2}
 	c.Step()
@@ -201,4 +201,17 @@ func TestJe(t *testing.T) {
 
 	c.Step()
 	assert.Equal(t, uint16(0xa), c.IR)
+}
+
+func TestJmp(t *testing.T) {
+	// opcode, val
+	// 12, 0
+	c := setup([]uint16{0b1010_001_001_00000, 0b1100_000_000_00000})
+	c.Regs = cpu.Regs{0x3, 0x2}
+	c.Step()
+	assert.Equal(t, uint16(0xa), c.IR)
+
+	c.Step()
+	assert.Equal(t, uint16(0xc), c.IR)
+	assert.Equal(t, uint16(0x0), c.PC)
 }
