@@ -1,6 +1,9 @@
 package cpu
 
-import "github.com/kijimaD/minicpu/pkg/asm"
+import (
+	"github.com/kijimaD/minicpu/pkg/asm"
+	"github.com/kijimaD/minicpu/pkg/types"
+)
 
 type Regs [8]Register
 type Register = uint16
@@ -83,7 +86,7 @@ func (cpu *CPU) Step() {
 
 func (cpu *CPU) SetROM() {
 	asm := asm.Assembler{}
-	cpu.ROM[0] = asm.Ldl(0, 3)
-	cpu.ROM[1] = asm.Ldh(0, 1)
-	cpu.ROM[2] = asm.Add(0, 0) // to, from
+	cpu.ROM[0] = asm.Ldl(types.REG0, 3)
+	cpu.ROM[1] = asm.Ldh(types.REG0, 1)
+	cpu.ROM[2] = asm.Add(types.REG0, 0)
 }

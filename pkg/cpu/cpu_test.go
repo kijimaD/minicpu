@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/kijimaD/minicpu/pkg/cpu"
+	"github.com/kijimaD/minicpu/pkg/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,11 +30,11 @@ func TestMOV(t *testing.T) {
 	c := setup([]uint16{0b0000_001_000_00000, 0b0000_001_101_00000})
 	c.Regs = cpu.Regs{0x3, 0x5}
 	c.Step()
-	assert.Equal(t, uint16(0x0), c.IR)
+	assert.Equal(t, uint16(types.MOV), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x3), c.Regs[1])
 	c.Step()
-	assert.Equal(t, uint16(0x0), c.IR)
+	assert.Equal(t, uint16(types.MOV), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x0), c.Regs[1])
 }
@@ -45,7 +46,7 @@ func TestADD(t *testing.T) {
 	c.Regs = cpu.Regs{0x3, 0x1, 0x2}
 	c.Step()
 
-	assert.Equal(t, uint16(0x1), c.IR)
+	assert.Equal(t, uint16(types.ADD), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x3), c.Regs[1])
 	assert.Equal(t, uint16(0x2), c.Regs[2])
@@ -57,7 +58,7 @@ func TestSUB(t *testing.T) {
 	c := setup([]uint16{0b0010_001_010_00000})
 	c.Regs = cpu.Regs{0x1, 0x7, 0x5}
 	c.Step()
-	assert.Equal(t, uint16(0x2), c.IR)
+	assert.Equal(t, uint16(types.SUB), c.IR)
 	assert.Equal(t, uint16(0x1), c.Regs[0])
 	assert.Equal(t, uint16(0x2), c.Regs[1])
 	assert.Equal(t, uint16(0x5), c.Regs[2])
@@ -69,7 +70,7 @@ func TestAND(t *testing.T) {
 	c := setup([]uint16{0b0011_001_010_00000})
 	c.Regs = cpu.Regs{0x3, 0x1, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0x3), c.IR)
+	assert.Equal(t, uint16(types.AND), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x0), c.Regs[1])
 	assert.Equal(t, uint16(0x2), c.Regs[2])
@@ -84,7 +85,7 @@ func TestOR(t *testing.T) {
 	c := setup([]uint16{0b0100_001_010_00000})
 	c.Regs = cpu.Regs{0x3, 0x1, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0x4), c.IR)
+	assert.Equal(t, uint16(types.OR), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x3), c.Regs[1])
 	assert.Equal(t, uint16(0x2), c.Regs[2])
@@ -99,7 +100,7 @@ func TestSL(t *testing.T) {
 	c := setup([]uint16{0b0101_001_000_00000})
 	c.Regs = cpu.Regs{0x3, 0x2, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0x5), c.IR)
+	assert.Equal(t, uint16(types.SL), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x4), c.Regs[1])
 	assert.Equal(t, uint16(0x2), c.Regs[2])
@@ -113,7 +114,7 @@ func TestSR(t *testing.T) {
 	c := setup([]uint16{0b0110_001_000_00000})
 	c.Regs = cpu.Regs{0x3, 0x2, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0x6), c.IR)
+	assert.Equal(t, uint16(types.SR), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x1), c.Regs[1])
 	assert.Equal(t, uint16(0x2), c.Regs[2])
@@ -127,7 +128,7 @@ func TestSRA(t *testing.T) {
 	c := setup([]uint16{0b0111_001_000_00000})
 	c.Regs = cpu.Regs{0x3, 0x2, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0x7), c.IR)
+	assert.Equal(t, uint16(types.SRA), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x1), c.Regs[1])
 	assert.Equal(t, uint16(0x2), c.Regs[2])
@@ -141,13 +142,13 @@ func TestLDL(t *testing.T) {
 	// 8, 3, 4
 	c := setup([]uint16{0b1000_000_000_00011, 0b1000_011_000_00100})
 	c.Step()
-	assert.Equal(t, uint16(0x8), c.IR)
+	assert.Equal(t, uint16(types.LDL), c.IR)
 	assert.Equal(t, uint16(0x03), c.Regs[0])
 	assert.Equal(t, uint16(0x00), c.Regs[1])
 	assert.Equal(t, uint16(0x00), c.Regs[2])
 	assert.Equal(t, uint16(0x00), c.Regs[3])
 	c.Step()
-	assert.Equal(t, uint16(0x8), c.IR)
+	assert.Equal(t, uint16(types.LDL), c.IR)
 	assert.Equal(t, uint16(0x03), c.Regs[0])
 	assert.Equal(t, uint16(0x00), c.Regs[1])
 	assert.Equal(t, uint16(0x00), c.Regs[2])
@@ -160,7 +161,7 @@ func TestLDH(t *testing.T) {
 	c := setup([]uint16{0b1001_001_000_00001})
 	c.Regs = cpu.Regs{0x3, 0x2, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0x9), c.IR)
+	assert.Equal(t, uint16(types.LDH), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x102), c.Regs[1])
 	assert.Equal(t, uint16(0x2), c.Regs[2])
@@ -175,12 +176,12 @@ func TestCMP(t *testing.T) {
 	c := setup([]uint16{0b1010_001_001_00000, 0b1010_000_001_00000})
 	c.Regs = cpu.Regs{0x3, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0xa), c.IR)
+	assert.Equal(t, uint16(types.CMP), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x2), c.Regs[1])
 	assert.Equal(t, true, c.EQFlag)
 	c.Step()
-	assert.Equal(t, uint16(0xa), c.IR)
+	assert.Equal(t, uint16(types.CMP), c.IR)
 	assert.Equal(t, uint16(0x3), c.Regs[0])
 	assert.Equal(t, uint16(0x2), c.Regs[1])
 	assert.Equal(t, false, c.EQFlag)
@@ -192,15 +193,15 @@ func TestJE(t *testing.T) {
 	c := setup([]uint16{0b1010_001_001_00000, 0b1011_000_000_00000})
 	c.Regs = cpu.Regs{0x3, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0xa), c.IR)
+	assert.Equal(t, uint16(types.CMP), c.IR)
 	assert.Equal(t, true, c.EQFlag)
 
 	c.Step()
-	assert.Equal(t, uint16(0xb), c.IR)
+	assert.Equal(t, uint16(types.JE), c.IR)
 	assert.Equal(t, uint16(0x0), c.PC)
 
 	c.Step()
-	assert.Equal(t, uint16(0xa), c.IR)
+	assert.Equal(t, uint16(types.CMP), c.IR)
 }
 
 func TestJMP(t *testing.T) {
@@ -209,10 +210,10 @@ func TestJMP(t *testing.T) {
 	c := setup([]uint16{0b1010_001_001_00000, 0b1100_000_000_00000})
 	c.Regs = cpu.Regs{0x3, 0x2}
 	c.Step()
-	assert.Equal(t, uint16(0xa), c.IR)
+	assert.Equal(t, uint16(types.CMP), c.IR)
 
 	c.Step()
-	assert.Equal(t, uint16(0xc), c.IR)
+	assert.Equal(t, uint16(types.JMP), c.IR)
 	assert.Equal(t, uint16(0x0), c.PC)
 }
 
@@ -223,7 +224,7 @@ func TestLD(t *testing.T) {
 	c.Regs = cpu.Regs{0x3, 0x2}
 	c.RAM[0] = uint16(0xa)
 	c.Step()
-	assert.Equal(t, uint16(0xd), c.IR)
+	assert.Equal(t, uint16(types.LD), c.IR)
 	assert.Equal(t, uint16(0xa), c.Regs[1])
 }
 
@@ -233,7 +234,7 @@ func TestST(t *testing.T) {
 	c := setup([]uint16{0b1110_001_000_00001})
 	c.Regs = cpu.Regs{0x3, 0x4}
 	c.Step()
-	assert.Equal(t, uint16(0xe), c.IR)
+	assert.Equal(t, uint16(types.ST), c.IR)
 	assert.Equal(t, uint16(0x4), c.RAM[1])
 }
 
@@ -242,6 +243,6 @@ func TestHLT(t *testing.T) {
 	// 15
 	c := setup([]uint16{0b1111_000_000_00000})
 	c.Step()
-	assert.Equal(t, uint16(0xf), c.IR)
+	assert.Equal(t, uint16(types.HLT), c.IR)
 	assert.Equal(t, true, c.Halted)
 }
