@@ -130,6 +130,12 @@ func (cpu *CPU) cmp(ra, rb Register) {
 	}
 }
 
+func (cpu *CPU) je(val uint16) {
+	if cpu.EQFlag == true {
+		cpu.PC = val
+	}
+}
+
 func (cpu *CPU) SetROM() {
 	asm := asm.Assembler{}
 	cpu.ROM[0] = asm.Ldl(0, 3)
@@ -156,4 +162,5 @@ var instructions = []*inst{
 	&inst{types.LDL, "ldl", func(cpu *CPU, operands []uint16) { cpu.ldl(operands[0], operands[2]) }},
 	&inst{types.LDH, "ldh", func(cpu *CPU, operands []uint16) { cpu.ldh(operands[0], operands[2]) }},
 	&inst{types.CMP, "cmp", func(cpu *CPU, operands []uint16) { cpu.cmp(operands[0], operands[1]) }},
+	&inst{types.JE, "je", func(cpu *CPU, operands []uint16) { cpu.je(operands[2]) }},
 }
