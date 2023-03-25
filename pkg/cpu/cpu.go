@@ -9,8 +9,8 @@ type Regs [8]Register
 type Register = uint16
 
 type CPU struct {
-	PC     uint16
-	IR     uint16
+	PC     uint16 // program counter
+	IR     uint16 // Instruction register
 	EQFlag bool
 	Regs   Regs
 	ROM    [256]uint16
@@ -35,26 +35,24 @@ func NewCPU() *CPU {
 }
 
 func (cpu *CPU) fetch() uint16 {
-	d := cpu.ROM[cpu.PC]
-	cpu.IR = d
+	cpu.IR = cpu.ROM[cpu.PC]
 	cpu.PC++
-	return cpu.opcode(d)
+	return cpu.opcode(cpu.IR)
 }
 
 func (cpu *CPU) fetchOperands() []uint16 {
-	d := cpu.ROM[cpu.PC]
 	operands := []uint16{}
 	var result uint16
 	{
-		result = cpu.opregA(d)
+		result = cpu.opregA(cpu.IR)
 		operands = append(operands, result)
 	}
 	{
-		result = cpu.opregB(d)
+		result = cpu.opregB(cpu.IR)
 		operands = append(operands, result)
 	}
 	{
-		result = cpu.opdata(d)
+		result = cpu.opdata(cpu.IR)
 		operands = append(operands, result)
 	}
 
@@ -78,9 +76,9 @@ func (cpu *CPU) opdata(line uint16) uint16 {
 }
 
 func (cpu *CPU) Step() {
-	operands := cpu.fetchOperands()
 	opcode := cpu.fetch()
 	cpu.Curop = opcode
+	operands := cpu.fetchOperands()
 
 	var inst *inst
 	inst = Instructions[opcode]
