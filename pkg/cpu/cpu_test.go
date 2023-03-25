@@ -22,7 +22,7 @@ func setup(data []uint16) *cpu.CPU {
 	return cpu
 }
 
-func TestMov(t *testing.T) {
+func TestMOV(t *testing.T) {
 	// opcode, regA, regB
 	// 0, 1, 0
 	// 0, 1, 5
@@ -38,7 +38,7 @@ func TestMov(t *testing.T) {
 	assert.Equal(t, uint16(0x0), c.Regs[1])
 }
 
-func TestAdd(t *testing.T) {
+func TestADD(t *testing.T) {
 	// opcode, regA, regB
 	// 1, 1, 2
 	c := setup([]uint16{0b0001_001_010_00000})
@@ -51,7 +51,7 @@ func TestAdd(t *testing.T) {
 	assert.Equal(t, uint16(0x2), c.Regs[2])
 }
 
-func TestSub(t *testing.T) {
+func TestSUB(t *testing.T) {
 	// opcode, regA, regB
 	// 2, 1, 2
 	c := setup([]uint16{0b0010_001_010_00000})
@@ -63,7 +63,7 @@ func TestSub(t *testing.T) {
 	assert.Equal(t, uint16(0x5), c.Regs[2])
 }
 
-func TestAnd(t *testing.T) {
+func TestAND(t *testing.T) {
 	// opcode, regA, regB
 	// 3, 1, 2
 	c := setup([]uint16{0b0011_001_010_00000})
@@ -78,7 +78,7 @@ func TestAnd(t *testing.T) {
 	// 0b00 => 0x0
 }
 
-func TestOr(t *testing.T) {
+func TestOR(t *testing.T) {
 	// opcode, regA, regB
 	// 4, 1, 2
 	c := setup([]uint16{0b0100_001_010_00000})
@@ -93,7 +93,7 @@ func TestOr(t *testing.T) {
 	// 0b11 => 0x3
 }
 
-func TestSl(t *testing.T) {
+func TestSL(t *testing.T) {
 	// opcode, regA, regB
 	// 5, 1, 0
 	c := setup([]uint16{0b0101_001_000_00000})
@@ -107,7 +107,7 @@ func TestSl(t *testing.T) {
 	// 0b100 => 0x4
 }
 
-func TestSr(t *testing.T) {
+func TestSR(t *testing.T) {
 	// opcode, regA, regB
 	// 6, 1, 0
 	c := setup([]uint16{0b0110_001_000_00000})
@@ -121,7 +121,7 @@ func TestSr(t *testing.T) {
 	// 0b001 => 0x1
 }
 
-func TestSra(t *testing.T) {
+func TestSRA(t *testing.T) {
 	// opcode, regA, regB
 	// 7, 1, 0
 	c := setup([]uint16{0b0111_001_000_00000})
@@ -135,7 +135,7 @@ func TestSra(t *testing.T) {
 	// 0b001 => 0x1
 }
 
-func TestLdl(t *testing.T) {
+func TestLDL(t *testing.T) {
 	// opcode, reg, val
 	// 8, 0, 3
 	// 8, 3, 4
@@ -154,7 +154,7 @@ func TestLdl(t *testing.T) {
 	assert.Equal(t, uint16(0x04), c.Regs[3])
 }
 
-func TestLdh(t *testing.T) {
+func TestLDH(t *testing.T) {
 	// opcode, regA, val
 	// 9, 1, 0
 	c := setup([]uint16{0b1001_001_000_00001})
@@ -169,7 +169,7 @@ func TestLdh(t *testing.T) {
 	// 0b0000_0001_0000_0010 // result
 }
 
-func TestCmp(t *testing.T) {
+func TestCMP(t *testing.T) {
 	// opcode, regA, regB
 	// 10, 1, 0
 	c := setup([]uint16{0b1010_001_001_00000, 0b1010_000_001_00000})
@@ -186,7 +186,7 @@ func TestCmp(t *testing.T) {
 	assert.Equal(t, false, c.EQFlag)
 }
 
-func TestJe(t *testing.T) {
+func TestJE(t *testing.T) {
 	// opcode, val
 	// 11, 0
 	c := setup([]uint16{0b1010_001_001_00000, 0b1011_000_000_00000})
@@ -203,7 +203,7 @@ func TestJe(t *testing.T) {
 	assert.Equal(t, uint16(0xa), c.IR)
 }
 
-func TestJmp(t *testing.T) {
+func TestJMP(t *testing.T) {
 	// opcode, val
 	// 12, 0
 	c := setup([]uint16{0b1010_001_001_00000, 0b1100_000_000_00000})
@@ -216,7 +216,7 @@ func TestJmp(t *testing.T) {
 	assert.Equal(t, uint16(0x0), c.PC)
 }
 
-func TestLd(t *testing.T) {
+func TestLD(t *testing.T) {
 	// opcode, regA, val
 	// 13, 1, 2
 	c := setup([]uint16{0b1101_001_000_00000})
@@ -227,7 +227,7 @@ func TestLd(t *testing.T) {
 	assert.Equal(t, uint16(0xa), c.Regs[1])
 }
 
-func TestSt(t *testing.T) {
+func TestST(t *testing.T) {
 	// opcode, regA, val
 	// 14, 1, 2
 	c := setup([]uint16{0b1110_001_000_00001})
@@ -237,7 +237,7 @@ func TestSt(t *testing.T) {
 	assert.Equal(t, uint16(0x4), c.RAM[1])
 }
 
-func TestHlt(t *testing.T) {
+func TestHLT(t *testing.T) {
 	// opcode
 	// 15
 	c := setup([]uint16{0b1111_000_000_00000})
