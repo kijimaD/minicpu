@@ -215,3 +215,14 @@ func TestJmp(t *testing.T) {
 	assert.Equal(t, uint16(0xc), c.IR)
 	assert.Equal(t, uint16(0x0), c.PC)
 }
+
+func TestLd(t *testing.T) {
+	// opcode, regA, val
+	// 13, 1, 2
+	c := setup([]uint16{0b1101_001_000_00000})
+	c.Regs = cpu.Regs{0x3, 0x2}
+	c.RAM[0] = uint16(0xa)
+	c.Step()
+	assert.Equal(t, uint16(0xd), c.IR)
+	assert.Equal(t, uint16(0xa), c.Regs[1])
+}

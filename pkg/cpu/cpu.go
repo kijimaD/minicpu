@@ -140,6 +140,10 @@ func (cpu *CPU) jmp(val uint16) {
 	cpu.PC = val
 }
 
+func (cpu *CPU) ld(ra Register, val uint16) {
+	cpu.Regs[ra] = cpu.RAM[val]
+}
+
 func (cpu *CPU) SetROM() {
 	asm := asm.Assembler{}
 	cpu.ROM[0] = asm.Ldl(0, 3)
@@ -168,4 +172,5 @@ var instructions = []*inst{
 	&inst{types.CMP, "cmp", func(cpu *CPU, operands []uint16) { cpu.cmp(operands[0], operands[1]) }},
 	&inst{types.JE, "je", func(cpu *CPU, operands []uint16) { cpu.je(operands[2]) }},
 	&inst{types.JMP, "jmp", func(cpu *CPU, operands []uint16) { cpu.jmp(operands[2]) }},
+	&inst{types.LD, "ld", func(cpu *CPU, operands []uint16) { cpu.ld(operands[0], operands[2]) }},
 }
